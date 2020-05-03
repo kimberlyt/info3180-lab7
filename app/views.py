@@ -35,19 +35,10 @@ def upload():
                         "description": description, 
                         "message": "File Upload Successful"
                         })
-                         
-    error_list= form_errors(uploadform)
-    # error_list = form_errors(form)
-    errors = [{'errors': error_list}]
-    return  jsonify(error = errors)
+
+    elist= form_errors(uploadform)
+    return  jsonify(error = [{'errors': elist}])
   
-
-    # return jsonify({
-    #             "errors": [
-    #             {error}
-    #             ]
-    #             })
-
 
 
 # Please create all new routes and view functions above this route.
