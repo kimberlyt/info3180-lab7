@@ -34,13 +34,19 @@ def upload():
         return jsonify({"filename": filename, 
                         "description": description, 
                         "message": "File Upload Successful"
-                        })  
-    return jsonify({
-                        "errors": [
-                            {form_errors(uploadform)},
-                            {}
-                        ]
-                    })
+                        })
+                         
+    error_list= form_errors(uploadform)
+    # error_list = form_errors(form)
+    errors = [{'errors': error_list}]
+    return  jsonify(error = errors)
+  
+
+    # return jsonify({
+    #             "errors": [
+    #             {error}
+    #             ]
+    #             })
 
 
 
