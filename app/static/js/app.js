@@ -21,11 +21,25 @@ Vue.component("app-header", {
     `,
 });
 
-const uploadFolder = Vue.component("upload-folder", {
+const uploadForm = Vue.component("upload-folder", {
   template: `
     <div>
         <h1>Upload Form</h1>
+        <div >
+            <ul  v-for= "s in success"  class="alert-success alert" >
+                {{ s.message }}
+            </ul>
+            <ul v-for="error in errors" class="alert-danger alert" >
+                <ul v-for="err in error">
+                    <ul v-for="e in err">
+                        <li>{{ e }} </li>
+                    </ul>
+                </ul>
+            </ul>
+        </div>
+        
         <form @submit.prevent="uploadPhoto" id="uploadForm" method="POST" enctype="multipart/form-data">
+        
             <div>
                 <label for="description">Description</label>  
                 <textarea type="text" id="description" style="width:100%" name="description"><br><br></textarea>
@@ -38,8 +52,15 @@ const uploadFolder = Vue.component("upload-folder", {
         </form>
     </div>
     `,
+  data: function () {
+    return {
+      errors: "",
+      success: [],
+    };
+  },
   methods: {
     uploadPhoto: function () {
+      let self = this;
       let uploadForm = document.getElementById("uploadForm");
       let form_data = new FormData(uploadForm);
       fetch("/api/upload", {
@@ -56,6 +77,8 @@ const uploadFolder = Vue.component("upload-folder", {
         .then(function (jsonResponse) {
           // display a success/error message
           console.log(jsonResponse);
+          self.errors = jsonResponse.error;
+          self.success = jsonResponse.success;
         })
         .catch(function (error) {
           console.error(error);
@@ -103,7 +126,7 @@ const router = new VueRouter({
   routes: [
     { path: "/", component: Home },
     // Put other routes here
-    { path: "/upload", component: uploadFolder },
+    { path: "/upload", component: uploadForm },
 
     // This is a catch all route in case none of the above matches
     { path: "*", component: NotFound },

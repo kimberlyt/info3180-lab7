@@ -31,10 +31,12 @@ def upload():
         ))
 
         
-        return jsonify({"filename": filename, 
-                        "description": description, 
-                        "message": "File Upload Successful"
-                        })
+        return jsonify(success=[{"message": "File Upload Successful",
+                        "filename": filename, 
+                        "description": description
+                        
+                        }])
+
 
     elist= form_errors(uploadform)
     return  jsonify(error = [{'errors': elist}])
